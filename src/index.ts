@@ -1,12 +1,18 @@
 import express from 'express'
+import resize from '../src/utilities/resizeHandler'
+import validator from '../middleware/validator'
 
 const app = express()
 const port = 3000
 
-app.get('/api', (req, res) => {
-    res.send('Hello, world!')
+app.use(express.json())
+app.use(validator)
+app.get('/', async (req, res) => {
+    const height = req.query.height as unknown as number,
+     width = req.query.width as unknown as number,
+     image_name = req.query.image as unknown as string
+    const image_resized = await resize(image_name, width, height)
+    res.sendFile(image_resized)
 })
 
-app.listen(port, () => {
-    console.log(`server started at localhost:${port}`)
-})
+app.listen(port)

@@ -19,10 +19,9 @@ module.exports = {
     ],
     "rules": {
         semi: ['error', 'never'],
-        quotes: ['error', 'single'],
         'prettier/prettier': 2,
         'no-console': 1,
         'no-var': 'error',
-        'prefer-const': 'error'
+        'prefer-const': 'error',
     }
 };
