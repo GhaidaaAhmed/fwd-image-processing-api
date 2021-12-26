@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import fs from 'fs'
 
-const validator = function (
+export const validator = function (
     req: express.Request,
     res: express.Response,
     next: Function
@@ -31,7 +31,11 @@ const validator = function (
     next()
 }
 
-function check_thumb_image_exist(image: string, height: number, width: number) {
+export function check_thumb_image_exist(
+    image: string,
+    height: number,
+    width: number
+) {
     const image_str = image.split('.'),
         image_new_name =
             image_str[0] + '_' + width + '_' + height + '.' + image_str[1],
@@ -44,5 +48,3 @@ function check_thumb_image_exist(image: string, height: number, width: number) {
         return thumb_image_path
     }
 }
-
-export default validator
