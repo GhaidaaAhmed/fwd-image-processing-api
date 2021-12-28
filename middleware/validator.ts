@@ -5,7 +5,7 @@ import fs from 'fs'
 export const validator = function (
     req: express.Request,
     res: express.Response,
-    next: Function
+    next: () => void
 ) {
     if (!req.query) return res.send('Please set Image Query Parameters')
     if (!req.query.height) return res.send('NO height Parameter')
