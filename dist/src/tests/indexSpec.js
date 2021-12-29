@@ -12,23 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const resizeHandler_1 = __importDefault(require("../src/utilities/resizeHandler"));
-const validator_1 = require("../middleware/validator");
-const app = (0, express_1.default)();
-const port = 3000;
-app.use(express_1.default.json());
-app.use(validator_1.validator);
-app.get('/api/images', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const height = req.query.height, width = req.query.width, image_name = req.query.image;
-    try {
-        const image_resized = yield (0, resizeHandler_1.default)(image_name, width, height);
-        if (image_resized)
-            res.sendFile(image_resized);
-    }
-    catch (err) {
-        console.error('Error: ', err);
-    }
-}));
-app.listen(port);
-exports.default = app;
+const supertest_1 = __importDefault(require("supertest"));
+const index_1 = __importDefault(require("../index"));
+const request = (0, supertest_1.default)(index_1.default);
+describe('Test image endpoint response', () => {
+    it('gets 400 respone for not having height parameter', (done) => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/api/images?image=encenadaport.jpg&width=200');
+        expect(response.status).toBe(400);
+        done();
+    }));
+});

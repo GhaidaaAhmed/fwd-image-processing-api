@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-import check_thumb_image_exist from '../../middleware/validator'
+import { check_thumb_image_exist } from '../../middleware/validator'
 import path from 'path'
 
 describe('check thumb image already exist', function () {

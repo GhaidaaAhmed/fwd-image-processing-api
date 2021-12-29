@@ -11,8 +11,13 @@ app.get('/api/images', async (req, res) => {
     const height = req.query.height as unknown as number,
         width = req.query.width as unknown as number,
         image_name = req.query.image as unknown as string
-    const image_resized = await resize(image_name, width, height)
-    res.sendFile(image_resized)
+    try {
+        const image_resized: string = await resize(image_name, width, height)
+        if (image_resized) res.sendFile(image_resized)
+    } catch (err: any) {
+        console.error('Error: ', err)
+    }
 })
 
 app.listen(port)
+export default app

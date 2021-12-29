@@ -8,22 +8,21 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const validator = function (req, res, next) {
     if (!req.query)
-        return res.send('Please set Image Query Parameters');
+        return res.status(400).send('Please set Image Query Parameters');
     if (!req.query.height)
-        return res.send('NO height Parameter');
+        return res.status(400).send('NO height Parameter');
     if (!req.query.width)
-        return res.send('NO width Parameter');
+        return res.status(400).send('NO width Parameter');
     if (!req.query.image)
-        return res.send('NO image Parameter');
+        return res.status(400).send('NO image Parameter');
     else {
-        const exist_thumb_image = check_thumb_image_exist(req.query.image, req.query.height, req.query.width);
-        if (exist_thumb_image) {
-            res.sendFile(exist_thumb_image);
-        }
+        const image_path = path_1.default.resolve('assets/images', 'full', req.query.image);
+        if (!fs_1.default.existsSync(image_path))
+            res.status(400).send('NO image Found');
         else {
-            const image_path = path_1.default.resolve('assets/images', 'full', req.query.image);
-            if (!fs_1.default.existsSync(image_path))
-                res.send('NO image Found');
+            const exist_thumb_image = check_thumb_image_exist(req.query.image, req.query.height, req.query.width);
+            if (exist_thumb_image)
+                return res.sendFile(exist_thumb_image);
         }
     }
     next();
@@ -34,5 +33,7 @@ function check_thumb_image_exist(image, height, width) {
     if (fs_1.default.existsSync(thumb_image_path)) {
         return thumb_image_path;
     }
+    else
+        return '';
 }
 exports.check_thumb_image_exist = check_thumb_image_exist;
