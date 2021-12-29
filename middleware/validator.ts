@@ -10,7 +10,11 @@ export const validator = function (
     if (!req.query)
         return res.status(400).send('Please set Image Query Parameters')
     if (!req.query.height) return res.status(400).send('NO height Parameter')
+    else if (!validate_dimension(req.query.height as unknown as string))
+        return res.status(400).send('Not valid Value for height')
     if (!req.query.width) return res.status(400).send('NO width Parameter')
+    else if (!validate_dimension(req.query.width as unknown as string))
+        return res.status(400).send('Not valid Value for width')
     if (!req.query.image) return res.status(400).send('NO image Parameter')
     else {
         const image_path = path.resolve(
@@ -47,4 +51,13 @@ export function check_thumb_image_exist(
     if (fs.existsSync(thumb_image_path)) {
         return thumb_image_path
     } else return ''
+}
+
+function validate_dimension(dimension: string): boolean {
+    let valid = false
+    if (typeof dimension === 'string') {
+        const dimension_num: number = parseInt(dimension)
+        if (!isNaN(dimension_num) && dimension_num > 0) valid = true
+    }
+    return valid
 }

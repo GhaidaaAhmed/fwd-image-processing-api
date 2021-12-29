@@ -11,8 +11,12 @@ const validator = function (req, res, next) {
         return res.status(400).send('Please set Image Query Parameters');
     if (!req.query.height)
         return res.status(400).send('NO height Parameter');
+    else if (!validate_dimension(req.query.height))
+        return res.status(400).send('Not valid Value for height');
     if (!req.query.width)
         return res.status(400).send('NO width Parameter');
+    else if (!validate_dimension(req.query.width))
+        return res.status(400).send('Not valid Value for width');
     if (!req.query.image)
         return res.status(400).send('NO image Parameter');
     else {
@@ -37,3 +41,12 @@ function check_thumb_image_exist(image, height, width) {
         return '';
 }
 exports.check_thumb_image_exist = check_thumb_image_exist;
+function validate_dimension(dimension) {
+    let valid = false;
+    if (typeof dimension === 'string') {
+        const dimension_num = parseInt(dimension);
+        if (!isNaN(dimension_num) && dimension_num > 0)
+            valid = true;
+    }
+    return valid;
+}

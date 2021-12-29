@@ -27,7 +27,7 @@ app.get('/api/images', (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.sendFile(image_resized);
     }
     catch (err) {
-        console.error('Error: ', err);
+        res.send(err);
     }
 }));
 app.listen(port);
