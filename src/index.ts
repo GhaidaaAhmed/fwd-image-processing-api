@@ -7,7 +7,7 @@ const port = 3000
 
 app.use(express.json())
 app.use(validator)
-app.get('/api/images', async (req, res) => {
+app.get('/api/images', async (req, res): Promise<any> => {
     const height = req.query.height as unknown as number,
         width = req.query.width as unknown as number,
         image_name = req.query.image as unknown as string
